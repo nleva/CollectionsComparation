@@ -27,6 +27,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		HashMap<String, List<Consumer>> hashMap = new HashMap<>();
+		HashMap<String, List<Consumer>> hashMap2 = new HashMap<>();
 		
 		Reflections r = new Reflections(new SubTypesScanner(false));
 		final Set<String> allTypes = r.getAllTypes();
@@ -38,7 +39,6 @@ public class Main {
 
 		int expNum = 0;
 		mapPutTest(hashMap, list, types, expNum);
-
 //		ImmutableListMultimap<String, Consumer> immutableListMultimap = builder
 		multimapPutTest(list, types);
 		ImmutableListMultimap<String, Consumer> guavaMap = putToMultimap(list, types);// builder.build();
@@ -47,7 +47,9 @@ public class Main {
 		Map<String, List<Consumer>> apacheMap = UnmodifiableMap.unmodifiableMap(hashMap);
 		gsPutTest(hashMap,3);
 		com.gs.collections.impl.UnmodifiableMap<String, List<Consumer>> gsMap = new com.gs.collections.impl.UnmodifiableMap<>(hashMap);
-
+	
+		mapPutTest(hashMap2, list, types, 9);
+		
 		System.out.println(hashMap.size());
 		System.out.println(guavaMap.size());
 		System.out.println(apacheMap.size());
@@ -62,10 +64,11 @@ public class Main {
 //		for(int i=0 ; i< 10_000; i++){
 //			testKeys[i]=types[(int) (Math.random()*totalTypes)];
 //		}
+		mapGetFullTest(apacheMap, types, 6);
 		mapGetFullTest(hashMap, types, 4);
 		mapGetFullTest(guavaMap.asMap(), types, 5);
-		mapGetFullTest(apacheMap, types, 6);
 		mapGetFullTest(gsMap, types, 7);
+		mapGetFullTest(hashMap2, types, 8);
 		
 		
 
@@ -79,15 +82,19 @@ public class Main {
 		Arrays.sort(times[5]);
 		Arrays.sort(times[6]);
 		Arrays.sort(times[7]);
+		Arrays.sort(times[8]);
+		Arrays.sort(times[9]);
 
 		System.out.println(times[0][500]);
+		System.out.println(times[9][500]);
 		System.out.println(times[1][500]);
 		System.out.println(times[2][500]);
 		System.out.println(times[3][500]);
-		System.out.println(times[4][500]);
-		System.out.println(times[5][500]);
-		System.out.println(times[6][500]);
-		System.out.println(times[7][500]);
+		System.out.println("hashmap "+times[4][500]);
+		System.out.println("guava   "+times[5][500]);
+		System.out.println("apache  "+times[6][500]);
+		System.out.println("gs      "+times[7][500]);
+		System.out.println("hm2     "+times[8][500]);
 		
 		System.out.println(guavaMap.get(types[0]));
 		
